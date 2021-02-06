@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option go_package = "github.com/studiers/g2r2w-blog/proto";
+
+package blog;
+
+service Blog {
+  rpc GetPosts(Empty) returns (stream Post) {}
+}
+
+message Empty {}
+
+message Post {
+  string title = 1;
+}
