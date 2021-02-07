@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	opts := []grpc.DialOption {
+	opts := []grpc.DialOption{
 		grpc.WithInsecure(),
 	}
 
@@ -21,8 +21,17 @@ func main() {
 		log.Panic(err)
 	}
 	client := pb.NewBlogClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), 10 * time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	printPosts(client, ctx)
+	printPost(client, ctx)
+}
+
+func printPosts(client pb.BlogClient, ctx context.Context) {
 	stream, err := client.GetPosts(ctx, &pb.Empty{})
 	if err != nil {
 		log.Fatal(err)
@@ -40,4 +49,13 @@ func main() {
 
 		log.Println(post)
 	}
+}
+
+func printPost(client pb.BlogClient, ctx context.Context) {
+	post, err := client.GetPost(ctx, &pb.PostIndex{Index: 1})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println(post)
 }

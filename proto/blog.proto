@@ -5,10 +5,15 @@ option go_package = "github.com/studiers/g2r2w-blog/proto";
 package blog;
 
 service Blog {
+  rpc GetPost(PostIndex) returns (Post) {}
   rpc GetPosts(Empty) returns (stream Post) {}
 }
 
 message Empty {}
+
+message PostIndex {
+  int64 index = 1;
+}
 
 message Post {
   string title = 1;

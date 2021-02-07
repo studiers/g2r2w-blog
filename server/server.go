@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	pb "github.com/studiers/g2r2w-blog/proto"
 	"google.golang.org/grpc"
@@ -26,6 +27,10 @@ type blogServer struct {
 func (server *blogServer) GetPosts(_ *pb.Empty, postsServer pb.Blog_GetPostsServer) error {
 	postsServer.Send(&pb.Post{Title: "Hello"})
 	return nil
+}
+
+func (server *blogServer) GetPost(ctx context.Context, _ *pb.PostIndex) (*pb.Post, error) {
+	return &pb.Post{Title: "Hello"}, nil
 }
 
 func newServer() *blogServer {
