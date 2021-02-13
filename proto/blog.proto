@@ -5,16 +5,55 @@ option go_package = "github.com/studiers/g2r2w-blog/proto";
 package blog;
 
 service Blog {
-  rpc GetPost(PostIndex) returns (Post) {}
-  rpc GetPosts(Empty) returns (stream Post) {}
+  rpc GetPost(GetPostRequest) returns (PostResponse) {}
+  rpc CreatePost(CreatePostRequest) returns (PostResponse) {}
+  rpc ModifyPost(ModifyPostRequest) returns (PostResponse) {}
+  rpc CreateComment(CreateCommentRequest) returns (CreateCommentResponse) {}
+  rpc ListComments(ListCommentsRequest) returns (stream CommentResponse) {}
+  rpc ListPosts(Empty) returns (stream PostResponse) {}
 }
 
 message Empty {}
 
-message PostIndex {
-  int64 index = 1;
+message GetPostRequest {
+  int64 id = 1;
+}
+
+message CreateCommentRequest {
+  int64 postId = 1;
+  string comment = 2;
+}
+
+message CreateCommentResponse {
+  int64 id = 1;
+  int64 postId = 2;
+  string comment = 3;
 }
 
 message Post {
   string title = 1;
+  string content = 2;
+}
+
+message CommentResponse {
+  int64 id = 1;
+  string comment = 2;
+}
+
+message PostResponse {
+  int64 id = 1;
+  Post post = 2;
+}
+
+message ModifyPostRequest {
+  int64 id = 1;
+  Post post = 2;
+}
+
+message CreatePostRequest {
+  Post post = 1;
+}
+
+message ListCommentsRequest {
+  int64 postId = 1;
 }

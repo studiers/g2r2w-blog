@@ -26,13 +26,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	printPosts(client, ctx)
-	printPost(client, ctx)
 }
 
 func printPosts(client pb.BlogClient, ctx context.Context) {
-	stream, err := client.GetPosts(ctx, &pb.Empty{})
+	stream, err := client.ListPosts(ctx, &pb.Empty{})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -52,7 +49,7 @@ func printPosts(client pb.BlogClient, ctx context.Context) {
 }
 
 func printPost(client pb.BlogClient, ctx context.Context) {
-	post, err := client.GetPost(ctx, &pb.PostIndex{Index: 1})
+	post, err := client.GetPost(ctx, &pb.GetPostRequest{ Id: 0 })
 	if err != nil {
 		log.Fatal(err)
 	}
