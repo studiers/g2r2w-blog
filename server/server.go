@@ -43,6 +43,7 @@ func (server *blogServer) ListPosts(_ *pb.Empty, postsServer pb.Blog_ListPostsSe
 	defer server.mutex.RUnlock()
 
 	for postId, post := range server.posts {
+		log.Printf("Post#%d %v sent.\n", postId, post)
 		postsServer.Send(&pb.PostResponse{Id: postId, Post: &post.Post})
 	}
 
@@ -72,6 +73,9 @@ func (server *blogServer) CreatePost(_ context.Context, req *pb.CreatePostReques
 		*req.Post,
 		make(comments),
 	}
+
+	log.Printf("Post#%d %v created\n", postId, req.Post)
+
 	return &pb.PostResponse{
 		Id:   postId,
 		Post: req.Post,
